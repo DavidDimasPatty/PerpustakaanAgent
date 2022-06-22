@@ -45,7 +45,8 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
                 myAgent.doDelete();
             }
         });
-
+        
+    /////////////////////////PANEL 1/////////////////////////
         JPanel rootPanel = new JPanel();
         rootPanel.setLayout(new GridBagLayout());
         rootPanel.setMinimumSize(new Dimension(330, 125));
@@ -129,18 +130,96 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
         rootPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
         getContentPane().add(rootPanel, BorderLayout.NORTH);
+        /////////////////////////PANEL 1/////////////////////////
+        
+        
+      /////////////////////////PANEL 2/////////////////////////
+        JPanel k = new JPanel();
+        k.setLayout(new GridBagLayout());
+        k.setMinimumSize(new Dimension(330, 125));
+        k.setPreferredSize(new Dimension(330, 125));
 
-        logTA = new JTextArea();
+        l = new JLabel("Title");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+        k.add(l, gridBagConstraints);
 
-        JScrollPane jsp = new JScrollPane(logTA);
-        jsp.setMinimumSize(new Dimension(300, 180));
-        jsp.setPreferredSize(new Dimension(300, 180));
+        l = new JLabel("Category");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+        k.add(l, gridBagConstraints);
+        
+         l = new JLabel("Quantity");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+        k.add(l, gridBagConstraints);
+
+        l = new JLabel("Status");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+        k.add(l, gridBagConstraints);
+
+        for (int i = 3; i < 10; i++) {
+            l = new JLabel("Book");
+            l.setHorizontalAlignment(SwingConstants.LEFT);
+            gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridx = 0;
+            gridBagConstraints.gridy = i;
+            gridBagConstraints.ipadx = 6;
+            gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+            //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+            k.add(l, gridBagConstraints);
+
+            l = new JLabel("Category");
+            l.setHorizontalAlignment(SwingConstants.LEFT);
+            gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridx = 1;
+            gridBagConstraints.gridy = i;
+            gridBagConstraints.ipadx = 6;
+            gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+            //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+            k.add(l, gridBagConstraints);
+
+            l = new JLabel("1");
+            l.setHorizontalAlignment(SwingConstants.LEFT);
+            gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridx = 3;
+            gridBagConstraints.gridy = i;
+            gridBagConstraints.ipadx = 6;
+            gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+            //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+            k.add(l, gridBagConstraints);
+            
+            JButton buyB = new JButton("Delete");
+            gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridx = 5;
+            gridBagConstraints.gridy = i;
+            // gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+            k.add(buyB, gridBagConstraints);
+            getContentPane().add(k, BorderLayout.WEST);
+        }
+/////////////////////////PANEL 2/////////////////////////
+
+/////////////////////////PANEL 3/////////////////////////
         JPanel p = new JPanel();
-        p.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        p.add(jsp);
-        getContentPane().add(p, BorderLayout.CENTER);
-
-        p = new JPanel();
         sellB = new JButton("Sell");
         sellB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -205,10 +284,9 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
 
         p.setBorder(new BevelBorder(BevelBorder.LOWERED));
         getContentPane().add(p, BorderLayout.SOUTH);
-
+/////////////////////////PANEL 3/////////////////////////
+        
         pack();
-
-        setResizable(false);
     }
 
     public void notifyUser(String message) {

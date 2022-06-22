@@ -117,32 +117,76 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         rootPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         getContentPane().add(rootPanel, BorderLayout.NORTH);
 
+        /////////////////////////PANEL 1/////////////////////////
+        /////////////////////////PANEL 2/////////////////////////
         JPanel k = new JPanel();
         k.setLayout(new GridBagLayout());
         k.setMinimumSize(new Dimension(330, 125));
         k.setPreferredSize(new Dimension(330, 125));
-        for (int i = 0; i < 10; i++) {
+
+        l = new JLabel("Title");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+        k.add(l, gridBagConstraints);
+
+        l = new JLabel("Category");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+        k.add(l, gridBagConstraints);
+
+        l = new JLabel("Status");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+        k.add(l, gridBagConstraints);
+
+        for (int i = 3; i < 10; i++) {
             l = new JLabel("Book");
             l.setHorizontalAlignment(SwingConstants.LEFT);
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 0;
             gridBagConstraints.gridy = i;
+            gridBagConstraints.ipadx = 6;
             gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-            gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+            //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+            k.add(l, gridBagConstraints);
+
+            l = new JLabel("Category");
+            l.setHorizontalAlignment(SwingConstants.LEFT);
+            gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridx = 1;
+            gridBagConstraints.gridy = i;
+            gridBagConstraints.ipadx = 6;
+            gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+            //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(l, gridBagConstraints);
 
             buyB = new JButton("Pinjam");
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 3;
             gridBagConstraints.gridy = i;
-            gridBagConstraints.gridwidth = 2;
-            gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+            // gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(buyB, gridBagConstraints);
             getContentPane().add(k, BorderLayout.WEST);
         }
+/////////////////////////PANEL 2/////////////////////////
 
+/////////////////////////PANEL 3/////////////////////////
         JPanel p = new JPanel();
-       
+
         resetB = new JButton("Reset");
         resetB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -163,7 +207,6 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         buyB.setPreferredSize(resetB.getPreferredSize());
         exitB.setPreferredSize(resetB.getPreferredSize());
 
-       
         p.add(resetB);
         p.add(exitB);
 
@@ -173,6 +216,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         pack();
 
     }
+/////////////////////////PANEL 3/////////////////////////
 
     public void setAgent(BookBuyerAgent a) {
         myAgent = a;
