@@ -13,10 +13,16 @@ import jade.gui.TimeChooser;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import javax.swing.*;
 import javax.swing.border.*;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * This is the GUI of the agent that tries to sell books on behalf of its user
@@ -25,19 +31,20 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
 
     private BookSellerAgent myAgent;
 
-    private JTextField titleTF, desiredPriceTF, minPriceTF, deadlineTF;
+    private JTextField titleField, qtyField, categoryField;
     private JButton setDeadlineB;
     private JButton setCCB, sellB, resetB, exitB;
     private JTextArea logTA;
-
+    public JPanel k;
     private Date deadline;
+    public int cury;
 
     public void setAgent(BookSellerAgent a) {
         myAgent = a;
         setTitle(myAgent.getName());
     }
 
-    public BookSellerGuiImpl() {
+    public BookSellerGuiImpl(LinkedList title, LinkedList category, LinkedList qty) {
         super();
 
         addWindowListener(new WindowAdapter() {
@@ -45,12 +52,12 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
                 myAgent.doDelete();
             }
         });
-        
-    /////////////////////////PANEL 1/////////////////////////
+        cury = title.size();
+        /////////////////////////PANEL 1/////////////////////////
         JPanel rootPanel = new JPanel();
         rootPanel.setLayout(new GridBagLayout());
-        rootPanel.setMinimumSize(new Dimension(330, 125));
-        rootPanel.setPreferredSize(new Dimension(330, 125));
+        //rootPanel.setMinimumSize(new Dimension(330, 125));
+        //rootPanel.setPreferredSize(new Dimension(330, 125));
 
         ///////////   
         // Line 0   
@@ -64,16 +71,16 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
         gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);
         rootPanel.add(l, gridBagConstraints);
 
-        titleTF = new JTextField(64);
-        titleTF.setMinimumSize(new Dimension(222, 20));
-        titleTF.setPreferredSize(new Dimension(222, 20));
+        titleField = new JTextField(64);
+        //titleField.setMinimumSize(new Dimension(222, 20));
+        //titleField.setPreferredSize(new Dimension(222, 20));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
-        rootPanel.add(titleTF, gridBagConstraints);
+        rootPanel.add(titleField, gridBagConstraints);
 
         ///////////   
         // Line 1   
@@ -87,15 +94,15 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
         gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);
         rootPanel.add(l, gridBagConstraints);
 
-        desiredPriceTF = new JTextField(64);
-        desiredPriceTF.setMinimumSize(new Dimension(70, 20));
-        desiredPriceTF.setPreferredSize(new Dimension(70, 20));
+        qtyField = new JTextField(64);
+        //qtyField.setMinimumSize(new Dimension(70, 20));
+        //qtyField.setPreferredSize(new Dimension(70, 20));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
-        rootPanel.add(desiredPriceTF, gridBagConstraints);
+        rootPanel.add(qtyField, gridBagConstraints);
 
         ///////////   
         // Line 2   
@@ -109,9 +116,9 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
         gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);
         rootPanel.add(l, gridBagConstraints);
 
-        deadlineTF = new JTextField(64);
-        deadlineTF.setMinimumSize(new Dimension(146, 20));
-        deadlineTF.setPreferredSize(new Dimension(146, 20));
+        categoryField = new JTextField(64);
+        // categoryField.setMinimumSize(new Dimension(146, 20));
+        // categoryField.setPreferredSize(new Dimension(146, 20));
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -119,7 +126,7 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
-        rootPanel.add(deadlineTF, gridBagConstraints);
+        rootPanel.add(categoryField, gridBagConstraints);
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -131,13 +138,12 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
 
         getContentPane().add(rootPanel, BorderLayout.NORTH);
         /////////////////////////PANEL 1/////////////////////////
-        
-        
-      /////////////////////////PANEL 2/////////////////////////
-        JPanel k = new JPanel();
+
+        /////////////////////////PANEL 2/////////////////////////
+        k = new JPanel();
         k.setLayout(new GridBagLayout());
-        k.setMinimumSize(new Dimension(330, 125));
-        k.setPreferredSize(new Dimension(330, 125));
+        //k.setMinimumSize(new Dimension(330, 125));
+        //k.setPreferredSize(new Dimension(330, 125));
 
         l = new JLabel("Title");
         l.setHorizontalAlignment(SwingConstants.LEFT);
@@ -158,8 +164,8 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
         k.add(l, gridBagConstraints);
-        
-         l = new JLabel("Quantity");
+
+        l = new JLabel("Quantity");
         l.setHorizontalAlignment(SwingConstants.LEFT);
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -177,8 +183,8 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
         //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
         k.add(l, gridBagConstraints);
 
-        for (int i = 3; i < 10; i++) {
-            l = new JLabel("Book");
+        for (int i = 3; i < title.size() + 3; i++) {
+            l = new JLabel(title.get(i - 3).toString());
             l.setHorizontalAlignment(SwingConstants.LEFT);
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 0;
@@ -188,7 +194,7 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
             //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(l, gridBagConstraints);
 
-            l = new JLabel("Category");
+            l = new JLabel(category.get(i - 3).toString());
             l.setHorizontalAlignment(SwingConstants.LEFT);
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 1;
@@ -198,7 +204,7 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
             //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(l, gridBagConstraints);
 
-            l = new JLabel("1");
+            l = new JLabel(qty.get(i - 3).toString());
             l.setHorizontalAlignment(SwingConstants.LEFT);
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 3;
@@ -207,7 +213,7 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
             gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
             //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(l, gridBagConstraints);
-            
+
             JButton buyB = new JButton("Delete");
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 5;
@@ -220,51 +226,85 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
 
 /////////////////////////PANEL 3/////////////////////////
         JPanel p = new JPanel();
-        sellB = new JButton("Sell");
+        sellB = new JButton("Add");
         sellB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String title = titleTF.getText();
-                int desiredPrice = -1;
-                int minPrice = -1;
-                if (title != null && title.length() > 0) {
-                    if (deadline != null && deadline.getTime() > System.currentTimeMillis()) {
-                        try {
-                            desiredPrice = Integer.parseInt(desiredPriceTF.getText());
-                            try {
-                                minPrice = Integer.parseInt(minPriceTF.getText());
-                                if (minPrice <= desiredPrice) {
-                                    // myAgent.addToCatalogue(title, desiredPrice, minPrice, deadline.getTime());   
-                                    myAgent.putForSale(title, desiredPrice, minPrice, deadline);
-                                    notifyUser("PUT FOR SALE: " + title + " between " + desiredPrice + " and " + minPrice + " by " + deadline);
-                                } else {
-                                    // minPrice > desiredPrice   
-                                    JOptionPane.showMessageDialog(BookSellerGuiImpl.this, "Min price must be cheaper than best price", "WARNING", JOptionPane.WARNING_MESSAGE);
-                                }
-                            } catch (Exception ex1) {
-                                // Invalid max cost   
-                                JOptionPane.showMessageDialog(BookSellerGuiImpl.this, "Invalid min price", "WARNING", JOptionPane.WARNING_MESSAGE);
-                            }
-                        } catch (Exception ex2) {
-                            // Invalid desired cost   
-                            JOptionPane.showMessageDialog(BookSellerGuiImpl.this, "Invalid best price", "WARNING", JOptionPane.WARNING_MESSAGE);
-                        }
-                    } else {
-                        // No deadline specified   
-                        JOptionPane.showMessageDialog(BookSellerGuiImpl.this, "Invalid deadline", "WARNING", JOptionPane.WARNING_MESSAGE);
+                String add = titleField.getText();
+                String qty = qtyField.getText();
+                String category = categoryField.getText();
+                if (!(add.isEmpty() && qty.isEmpty() && category.isEmpty())) {
+                    try {
+                        FileWriter myWriter = new FileWriter("bookDB.txt", true);
+                        myWriter.write("\n" + add + "\n");
+                        myWriter.write(category + "\n");
+                        myWriter.write(qty);
+
+                        myAgent.ReadDb();
+                        myWriter.close();
+                        System.out.println("Successfully wrote to the file.");
+                        //add to ui//
+                        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+
+                        JLabel l = new JLabel(add);
+                        l.setHorizontalAlignment(SwingConstants.LEFT);
+                        gridBagConstraints = new GridBagConstraints();
+                        gridBagConstraints.gridx = 0;
+                        gridBagConstraints.gridy = cury + 3;
+                        gridBagConstraints.ipadx = 6;
+                        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+                        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+                        k.add(l, gridBagConstraints);
+
+                        JLabel s = new JLabel(category);
+                        s.setHorizontalAlignment(SwingConstants.LEFT);
+                        gridBagConstraints = new GridBagConstraints();
+                        gridBagConstraints.gridx = 1;
+                        gridBagConstraints.gridy = cury + 3;
+                        gridBagConstraints.ipadx = 6;
+                        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+                        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+                        k.add(s, gridBagConstraints);
+
+                        JLabel x = new JLabel(qty);
+                        x.setHorizontalAlignment(SwingConstants.LEFT);
+                        gridBagConstraints = new GridBagConstraints();
+                        gridBagConstraints.gridx = 3;
+                        gridBagConstraints.gridy = cury + 3;
+                        gridBagConstraints.ipadx = 6;
+                        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+                        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+                        k.add(x, gridBagConstraints);
+
+                        JButton buyB = new JButton("Delete");
+                        gridBagConstraints = new GridBagConstraints();
+                        gridBagConstraints.gridx = 5;
+                        gridBagConstraints.gridy = cury + 3;
+                        // gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+                        k.add(buyB, gridBagConstraints);
+                        getContentPane().add(k, BorderLayout.WEST, 1);
+                        ////////////;
+                        titleField.setText("");
+                        qtyField.setText("");
+                        categoryField.setText("");
+                        pack();
+                        cury++;
+                    } catch (IOException ex) {
+                        System.out.println("An error occurred.");
+                        ex.printStackTrace();
                     }
+
                 } else {
-                    // No book title specified   
-                    JOptionPane.showMessageDialog(BookSellerGuiImpl.this, "No book title specified", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    JFrame frame = new JFrame("frame");
+                    JOptionPane.showMessageDialog(frame, "Field can't be empty");
                 }
             }
         });
         resetB = new JButton("Reset");
         resetB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                titleTF.setText("");
-                desiredPriceTF.setText("");
-                minPriceTF.setText("");
-                deadlineTF.setText("");
+                titleField.setText("");
+                qtyField.setText("");
+                categoryField.setText("");
                 deadline = null;
             }
         });
@@ -285,7 +325,7 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
         p.setBorder(new BevelBorder(BevelBorder.LOWERED));
         getContentPane().add(p, BorderLayout.SOUTH);
 /////////////////////////PANEL 3/////////////////////////
-        
+
         pack();
     }
 

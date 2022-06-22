@@ -95,7 +95,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
         rootPanel.add(deadlineTF, gridBagConstraints);
 
-        l = new JLabel("Address:");
+        l = new JLabel("Name:");
         l.setHorizontalAlignment(SwingConstants.LEFT);
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -111,6 +111,29 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new Insets(5, 3, 0, 3);
+        rootPanel.add(address, gridBagConstraints);
+        rootPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        getContentPane().add(rootPanel, BorderLayout.NORTH);
+        
+        l = new JLabel("Address:");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);
+        rootPanel.add(l, gridBagConstraints);
+
+        address = new JTextField(64);
+        address.setMinimumSize(new Dimension(146, 20));
+        address.setPreferredSize(new Dimension(146, 20));
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
