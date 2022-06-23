@@ -11,10 +11,13 @@ import jade.lang.acl.*;
 
 import jade.domain.*;
 import jade.domain.FIPAAgentManagement.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 import java.util.Vector;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Scanner;
 import seller.BookSellerAgent;
 
 public class BookBuyerAgent extends Agent {
@@ -37,16 +40,11 @@ public class BookBuyerAgent extends Agent {
         System.out.println("Buyer-agent " + getAID().getLocalName() + " is ready.");
 
         // Get names of seller agents as arguments   
-        Object[] args = getArguments();
-        if (args != null && args.length > 0) {
-            for (int i = 0; i < args.length; ++i) {
-                AID seller = new AID((String) args[i], AID.ISLOCALNAME);
-                sellerAgents.addElement(seller);
-            }
-        }
+        ReadDb();
+        System.out.println(title.size());
 
         // Show the GUI to interact with the user   
-        myGui = new BookBuyerGuiImpl();
+        myGui = new BookBuyerGuiImpl(title, category, qty);
         myGui.setAgent(this);
         myGui.show();
         addBehaviour(new waitingBehaviour(this));
@@ -77,7 +75,7 @@ public class BookBuyerAgent extends Agent {
         public void action() {
             msg = receive();
             if (msg != null) {
-              
+
                 System.out.println("new msg: " + msg.getContent());
                 String lastMsg = msg.getContent();
                 String[] tokens = lastMsg.split(" ");
@@ -86,6 +84,22 @@ public class BookBuyerAgent extends Agent {
                 qty.add(tokens[2]);
 
             }
+        }
+    }
+
+    public void ReadDb() {
+        try {
+            File myObj = new File("bookDB.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                this.title.add(myReader.nextLine());
+                this.category.add(myReader.nextLine());
+                this.qty.add(myReader.nextLine());
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 }

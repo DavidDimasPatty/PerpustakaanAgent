@@ -17,6 +17,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * J2SE (Swing-based) implementation of the GUI of the agent that tries to buy
@@ -31,10 +32,12 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
     private JButton setCCB, buyB, resetB, exitB;
     private JButton pinjam;
     private JTextArea logTA;
+    public JPanel k;
+     public int addy=1;
 
     private Date deadline;
 
-    public BookBuyerGuiImpl() {
+    public BookBuyerGuiImpl(LinkedList title, LinkedList category, LinkedList qty) {
         super();
 
         addWindowListener(new WindowAdapter() {
@@ -143,10 +146,10 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
 
         /////////////////////////PANEL 1/////////////////////////
         /////////////////////////PANEL 2/////////////////////////
-        JPanel k = new JPanel();
+        k = new JPanel();
         k.setLayout(new GridBagLayout());
-        k.setMinimumSize(new Dimension(330, 125));
-        k.setPreferredSize(new Dimension(330, 125));
+        //k.setMinimumSize(new Dimension(330, 125));
+        //k.setPreferredSize(new Dimension(330, 125));
 
         l = new JLabel("Title");
         l.setHorizontalAlignment(SwingConstants.LEFT);
@@ -168,7 +171,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
         k.add(l, gridBagConstraints);
 
-        l = new JLabel("Status");
+        l = new JLabel("Quantity");
         l.setHorizontalAlignment(SwingConstants.LEFT);
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -177,8 +180,17 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
         k.add(l, gridBagConstraints);
 
-        for (int i = 3; i < 10; i++) {
-            l = new JLabel("Book");
+        l = new JLabel("Status");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+        k.add(l, gridBagConstraints);
+
+        for (int i = 3; i < title.size() + 3; i++) {
+            l = new JLabel(title.get(i - 3).toString());
             l.setHorizontalAlignment(SwingConstants.LEFT);
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 0;
@@ -188,7 +200,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
             //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(l, gridBagConstraints);
 
-            l = new JLabel("Category");
+            l = new JLabel(category.get(i - 3).toString());
             l.setHorizontalAlignment(SwingConstants.LEFT);
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 1;
@@ -198,17 +210,30 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
             //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(l, gridBagConstraints);
 
-            pinjam = new JButton("Pinjam");
-            pinjam.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                     
-                }
-            });
+            l = new JLabel(qty.get(i - 3).toString());
+            l.setHorizontalAlignment(SwingConstants.LEFT);
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 3;
             gridBagConstraints.gridy = i;
+            gridBagConstraints.ipadx = 6;
+            gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+            //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+            k.add(l, gridBagConstraints);
+
+            JButton buyB = new JButton("Pinjam");
+            buyB.addActionListener(new ActionListener() {
+                int getIndex = addy - 3;
+
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+            gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridx = 5;
+            gridBagConstraints.gridy = i;
             // gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
-            k.add(pinjam, gridBagConstraints);
+            k.add(buyB, gridBagConstraints);
+            addy++;
             getContentPane().add(k, BorderLayout.WEST);
         }
 /////////////////////////PANEL 2/////////////////////////
