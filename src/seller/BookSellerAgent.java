@@ -9,6 +9,7 @@ package seller;
  *
  * @author USER
  */
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
@@ -21,8 +22,9 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class BookSellerAgent extends Agent {
-    // The catalogue of books available for sale  
 
+    // The catalogue of books available for sale  
+    private Vector buyerAgents = new Vector();
     private Map catalogue = new HashMap();
     public LinkedList title = new LinkedList();
     public LinkedList category = new LinkedList();
@@ -38,10 +40,19 @@ public class BookSellerAgent extends Agent {
     protected void setup() {
         // Printout a welcome message  
         System.out.println("Seller-agent " + getAID().getName() + " is ready.");
+        
+        Object[] args = getArguments();   
+        if (args != null && args.length > 0) {   
+          for (int i = 0; i < args.length; ++i) {   
+            AID buyer= new AID((String) args[i], AID.ISLOCALNAME);   
+           buyerAgents.addElement(buyer);   
+          }   
+        }
+        
         ReadDb();
         System.out.println(title.size());
         // Create and show the GUI  
-        myGui = new BookSellerGuiImpl(title,category,qty);
+        myGui = new BookSellerGuiImpl(title, category, qty);
         myGui.setAgent(this);
         myGui.show();
 
@@ -83,6 +94,15 @@ public class BookSellerAgent extends Agent {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+    }
+
+    public void sendADD(String data) {
+        System.out.println("masuk: "+data);
+        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+        msg.setContent("" + data);
+        msg.addReceiver(new AID("buy", AID.ISLOCALNAME));
+        msg.setContent(data);
+        send(msg);
     }
 
     /**
@@ -127,13 +147,11 @@ public class BookSellerAgent extends Agent {
 
     private class PriceManager extends TickerBehaviour {
 
-        private String title;
         private int minPrice, currentPrice, initPrice, deltaP;
         private long initTime, deadline, deltaT;
 
         private PriceManager(Agent a, String t, int ip, int mp, Date d) {
             super(a, 60000); // tick every minute  
-            title = t;
             initPrice = ip;
             currentPrice = initPrice;
             deltaP = initPrice - mp;
@@ -144,9 +162,8 @@ public class BookSellerAgent extends Agent {
 
         public void onStart() {
             // Insert the book in the catalogue of books available for sale  
-            ReadDb();
-            catalogue.put(title, this);
             super.onStart();
+
         }
 
         public void onTick() {

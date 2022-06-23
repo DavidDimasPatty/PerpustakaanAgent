@@ -9,7 +9,9 @@ package seller;
  *
  * @author USER
  */
+import jade.core.AID;
 import jade.gui.TimeChooser;
+import jade.lang.acl.ACLMessage;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -38,6 +40,7 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
     public JPanel k;
     private Date deadline;
     public int cury;
+    public int addy=1;
 
     public void setAgent(BookSellerAgent a) {
         myAgent = a;
@@ -215,11 +218,18 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
             k.add(l, gridBagConstraints);
 
             JButton buyB = new JButton("Delete");
+            buyB.addActionListener(new ActionListener() {
+                int getIndex=addy-3;   
+                public void actionPerformed(ActionEvent e) {
+                  
+                }
+            });
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 5;
             gridBagConstraints.gridy = i;
             // gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(buyB, gridBagConstraints);
+            addy++;
             getContentPane().add(k, BorderLayout.WEST);
         }
 /////////////////////////PANEL 2/////////////////////////
@@ -286,6 +296,7 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
                         titleField.setText("");
                         qtyField.setText("");
                         categoryField.setText("");
+                        myAgent.sendADD(add+" "+category+" "+qty);
                         pack();
                         cury++;
                     } catch (IOException ex) {

@@ -29,7 +29,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
     private JTextField titleTF, desiredCostTF, maxCostTF, deadlineTF, address;
     private JButton setDeadlineB;
     private JButton setCCB, buyB, resetB, exitB;
-     private JButton  pinjam;
+    private JButton pinjam;
     private JTextArea logTA;
 
     private Date deadline;
@@ -117,7 +117,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         rootPanel.add(address, gridBagConstraints);
         rootPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         getContentPane().add(rootPanel, BorderLayout.NORTH);
-        
+
         l = new JLabel("Address:");
         l.setHorizontalAlignment(SwingConstants.LEFT);
         gridBagConstraints = new GridBagConstraints();
@@ -199,6 +199,11 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
             k.add(l, gridBagConstraints);
 
             pinjam = new JButton("Pinjam");
+            pinjam.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                     
+                }
+            });
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 3;
             gridBagConstraints.gridy = i;
@@ -228,7 +233,6 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
             }
         });
 
-        
         exitB.setPreferredSize(resetB.getPreferredSize());
 
         p.add(resetB);
