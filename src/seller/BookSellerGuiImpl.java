@@ -303,56 +303,56 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
                         myAgent.ReadDb();
                         myWriter.close();
                         System.out.println("Successfully wrote to the file.");
-                        //add to ui//
-                        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-
-                        JLabel l = new JLabel(add);
-                        l.setHorizontalAlignment(SwingConstants.LEFT);
-                        gridBagConstraints = new GridBagConstraints();
-                        gridBagConstraints.gridx = 0;
-                        gridBagConstraints.gridy = cury + 3;
-                        gridBagConstraints.ipadx = 6;
-                        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-                        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
-                        k.add(l, gridBagConstraints);
-
-                        JLabel s = new JLabel(category);
-                        s.setHorizontalAlignment(SwingConstants.LEFT);
-                        gridBagConstraints = new GridBagConstraints();
-                        gridBagConstraints.gridx = 1;
-                        gridBagConstraints.gridy = cury + 3;
-                        gridBagConstraints.ipadx = 6;
-                        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-                        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
-                        k.add(s, gridBagConstraints);
-
-                        JLabel x = new JLabel(qty);
-                        x.setHorizontalAlignment(SwingConstants.LEFT);
-                        gridBagConstraints = new GridBagConstraints();
-                        gridBagConstraints.gridx = 3;
-                        gridBagConstraints.gridy = cury + 3;
-                        gridBagConstraints.ipadx = 6;
-                        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-                        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
-                        k.add(x, gridBagConstraints);
-
-                        JButton buyB = new JButton("Delete");
-                        gridBagConstraints = new GridBagConstraints();
-                        gridBagConstraints.gridx = 5;
-                        gridBagConstraints.gridy = cury + 3;
-                        // gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
-                        k.add(buyB, gridBagConstraints);
-                        getContentPane().add(k, BorderLayout.WEST, 1);
-                        ////////////;
-                        titleField.setText("");
-                        qtyField.setText("");
-                        categoryField.setText("");
-                        myAgent.title.add(add);
-                        myAgent.qty.add(qty);
-                        myAgent.category.add(category);
-                        myAgent.sendADD(add + " " + category + " " + qty);
-                        pack();
-                        cury++;
+//                        //add to ui//
+//                        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+//
+//                        JLabel l = new JLabel(add);
+//                        l.setHorizontalAlignment(SwingConstants.LEFT);
+//                        gridBagConstraints = new GridBagConstraints();
+//                        gridBagConstraints.gridx = 0;
+//                        gridBagConstraints.gridy = cury + 3;
+//                        gridBagConstraints.ipadx = 6;
+//                        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+//                        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+//                        k.add(l, gridBagConstraints);
+//
+//                        JLabel s = new JLabel(category);
+//                        s.setHorizontalAlignment(SwingConstants.LEFT);
+//                        gridBagConstraints = new GridBagConstraints();
+//                        gridBagConstraints.gridx = 1;
+//                        gridBagConstraints.gridy = cury + 3;
+//                        gridBagConstraints.ipadx = 6;
+//                        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+//                        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+//                        k.add(s, gridBagConstraints);
+//
+//                        JLabel x = new JLabel(qty);
+//                        x.setHorizontalAlignment(SwingConstants.LEFT);
+//                        gridBagConstraints = new GridBagConstraints();
+//                        gridBagConstraints.gridx = 3;
+//                        gridBagConstraints.gridy = cury + 3;
+//                        gridBagConstraints.ipadx = 6;
+//                        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+//                        //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+//                        k.add(x, gridBagConstraints);
+//
+//                        JButton buyB = new JButton("Add");
+//                        gridBagConstraints = new GridBagConstraints();
+//                        gridBagConstraints.gridx = 5;
+//                        gridBagConstraints.gridy = cury + 3;
+//                        // gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
+//                        k.add(buyB, gridBagConstraints);
+//                        getContentPane().add(k, BorderLayout.WEST, 1);
+//                        ////////////;
+//                        titleField.setText("");
+//                        qtyField.setText("");
+//                        categoryField.setText("");
+//                        myAgent.title.add(add);
+//                        myAgent.qty.add(qty);
+//                        myAgent.category.add(category);
+                       myAgent.sendADD(add + " " + category + " " + qty);
+                       myAgent.takeDown();
+                       myAgent.setup();
                     } catch (IOException ex) {
                         System.out.println("An error occurred.");
                         ex.printStackTrace();
