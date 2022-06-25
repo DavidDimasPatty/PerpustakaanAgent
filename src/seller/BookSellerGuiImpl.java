@@ -20,6 +20,10 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -216,12 +220,11 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
             gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
             //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(l, gridBagConstraints);
-
-            JButton buyB = new JButton("Delete");
+            final int x=i-3;
+            JButton buyB = new JButton("Add");
             buyB.addActionListener(new ActionListener() {
-                int getIndex=addy-3;   
                 public void actionPerformed(ActionEvent e) {
-                  
+                    myAgent.bookReturn(x+ "");
                 }
             });
             gridBagConstraints = new GridBagConstraints();
@@ -244,10 +247,13 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
                 String category = categoryField.getText();
                 if (!(add.isEmpty() && qty.isEmpty() && category.isEmpty())) {
                     try {
+                         Path path = Paths.get("bookDB.txt");
                         FileWriter myWriter = new FileWriter("bookDB.txt", true);
-                        myWriter.write("\n" + add + "\n");
+                        java.util.List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+                     
+                        myWriter.write(add + "\n");
                         myWriter.write(category + "\n");
-                        myWriter.write(qty);
+                        myWriter.write(qty+ "\n");
 
                         myAgent.ReadDb();
                         myWriter.close();
@@ -342,5 +348,11 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
 
     public void notifyUser(String message) {
         logTA.append(message + "\n");
+    }
+    
+
+    @Override
+    public void updateGUI() {
+    pack();
     }
 }

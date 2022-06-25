@@ -10,7 +10,7 @@ package buyer;
  * @author USER
  */
 import jade.gui.TimeChooser;
-
+import java.util.concurrent.ThreadLocalRandom;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -27,13 +27,13 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
 
     private BookBuyerAgent myAgent;
 
-    private JTextField titleTF, desiredCostTF, maxCostTF, deadlineTF, address;
+    private JTextField titleTF, categoryTF, nameTF, addressTF;
     private JButton setDeadlineB;
-    private JButton setCCB, buyB, resetB, exitB;
+    private JButton setCCB, buyB, resetB, exitB, findB;
     private JButton pinjam;
     private JTextArea logTA;
     public JPanel k;
-     public int addy=1;
+    public int addy = 1;
 
     private Date deadline;
 
@@ -86,9 +86,9 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);
         rootPanel.add(l, gridBagConstraints);
 
-        deadlineTF = new JTextField(64);
-        deadlineTF.setMinimumSize(new Dimension(146, 20));
-        deadlineTF.setPreferredSize(new Dimension(146, 20));
+        categoryTF = new JTextField(64);
+        categoryTF.setMinimumSize(new Dimension(146, 20));
+        categoryTF.setPreferredSize(new Dimension(146, 20));
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -96,7 +96,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
-        rootPanel.add(deadlineTF, gridBagConstraints);
+        rootPanel.add(categoryTF, gridBagConstraints);
 
         l = new JLabel("Name:");
         l.setHorizontalAlignment(SwingConstants.LEFT);
@@ -107,9 +107,9 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);
         rootPanel.add(l, gridBagConstraints);
 
-        address = new JTextField(64);
-        address.setMinimumSize(new Dimension(146, 20));
-        address.setPreferredSize(new Dimension(146, 20));
+        nameTF = new JTextField(64);
+        nameTF.setMinimumSize(new Dimension(146, 20));
+        nameTF.setPreferredSize(new Dimension(146, 20));
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -117,7 +117,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
-        rootPanel.add(address, gridBagConstraints);
+        rootPanel.add(nameTF, gridBagConstraints);
         rootPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         getContentPane().add(rootPanel, BorderLayout.NORTH);
 
@@ -130,9 +130,9 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);
         rootPanel.add(l, gridBagConstraints);
 
-        address = new JTextField(64);
-        address.setMinimumSize(new Dimension(146, 20));
-        address.setPreferredSize(new Dimension(146, 20));
+        addressTF = new JTextField(64);
+        addressTF.setMinimumSize(new Dimension(146, 20));
+        addressTF.setPreferredSize(new Dimension(146, 20));
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -140,7 +140,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
-        rootPanel.add(address, gridBagConstraints);
+        rootPanel.add(addressTF, gridBagConstraints);
         rootPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         getContentPane().add(rootPanel, BorderLayout.NORTH);
 
@@ -220,12 +220,12 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
             //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(l, gridBagConstraints);
 
-            JButton buyB = new JButton("Pinjam");
+            final int x = i - 3;
+            buyB = new JButton("Pinjam");
             buyB.addActionListener(new ActionListener() {
-                int getIndex = addy - 3;
-
                 public void actionPerformed(ActionEvent e) {
-
+                    myAgent.sendCourrier(nameTF.getText().toString().trim() + " " + addressTF.getText().toString().trim() + " " + "antar" + " " + ThreadLocalRandom.current().nextInt(3000, 100000 + 1));
+                    myAgent.bookTaken(title.get(x).toString().trim());
                 }
             });
             gridBagConstraints = new GridBagConstraints();
@@ -240,17 +240,46 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
 
 /////////////////////////PANEL 3/////////////////////////
         JPanel p = new JPanel();
+        findB = new JButton("Find");
+        findB.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String tc = titleTF.getText();
+                String cc = categoryTF.getText();
+                myAgent.ReadDb();
+                System.out.println(tc);
+                LinkedList newtitle = new LinkedList();
+                LinkedList newcategory = new LinkedList();
+                LinkedList newqty = new LinkedList();
+
+                for (int i = 0; i < title.size()/2; i++) {
+                    if (title.get(i).toString().contains(tc)) {
+                        System.out.println("tes");
+                        newtitle.add(title.get(i).toString());
+                        newcategory.add(category.get(i).toString());
+                        newqty.add(qty.get(i).toString());
+
+                    }
+                }
+                myAgent.title = newtitle;
+                myAgent.category = newcategory;
+                myAgent.qty = newqty;
+                myAgent.newsetup();
+            }
+        }
+        );
 
         resetB = new JButton("Reset");
+
         resetB.addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 titleTF.setText("");
-                desiredCostTF.setText("");
-                maxCostTF.setText("");
-                deadlineTF.setText("");
-                deadline = null;
+                categoryTF.setText("");
+                nameTF.setText("");
+                addressTF.setText("");
             }
-        });
+        }
+        );
         exitB = new JButton("Exit");
         exitB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -260,6 +289,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
 
         exitB.setPreferredSize(resetB.getPreferredSize());
 
+        p.add(findB);
         p.add(resetB);
         p.add(exitB);
 

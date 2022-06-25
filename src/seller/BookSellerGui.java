@@ -15,4 +15,6 @@ public interface BookSellerGui {
   void hide();   
   void notifyUser(String message);   
   void dispose();   
+
+    public void updateGUI();
 } 

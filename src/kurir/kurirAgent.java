@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package buyer;
+package kurir;
 
 import jade.core.*;
 import jade.core.behaviours.*;
@@ -20,13 +20,13 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import seller.BookSellerAgent;
 
-public class BookBuyerAgent extends Agent {
+public class kurirAgent extends Agent {
     // The list of known seller agents   
 
     private Vector sellerAgents = new Vector();
 
     // The GUI to interact with the user   
-    private BookBuyerGui myGui;
+    private kurirGuiImpl myGui;
     public LinkedList title = new LinkedList();
     public LinkedList category = new LinkedList();
     public LinkedList qty = new LinkedList();
@@ -44,7 +44,7 @@ public class BookBuyerAgent extends Agent {
         System.out.println(title.size());
 
         // Show the GUI to interact with the user   
-        myGui = new BookBuyerGuiImpl(title, category, qty);
+        myGui = new kurirGuiImpl(title, category, qty);
         myGui.setAgent(this);
         myGui.show();
         addBehaviour(new waitingBehaviour(this));
@@ -78,11 +78,7 @@ public class BookBuyerAgent extends Agent {
 
                 System.out.println("new msg: " + msg.getContent());
                 String lastMsg = msg.getContent();
-                String[] tokens = lastMsg.split(" ");
-                title.add(tokens[0]);
-                category.add(tokens[1]);
-                qty.add(tokens[2]);
-
+                myGui.tambah(lastMsg);
             }
         }
     }

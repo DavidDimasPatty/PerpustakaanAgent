@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package buyer;
+package kurir;
 
 /**
  *
@@ -15,8 +15,8 @@ package buyer;
     void notifyUser(String message);
 }
 * */
-public interface BookBuyerGui {   
-  void setAgent(BookBuyerAgent a);   
+public interface kurirGui {   
+  void setAgent(kurirAgent a);   
   void show();   
   void hide();   
   void notifyUser(String message);   

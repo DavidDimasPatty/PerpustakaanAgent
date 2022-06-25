@@ -13,11 +13,20 @@ import jade.domain.*;
 import jade.domain.FIPAAgentManagement.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.Vector;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import seller.BookSellerAgent;
 
 public class BookBuyerAgent extends Agent {
@@ -38,7 +47,9 @@ public class BookBuyerAgent extends Agent {
     protected void setup() {
         // Printout a welcome message   
         System.out.println("Buyer-agent " + getAID().getLocalName() + " is ready.");
-
+        title.clear();
+        category.clear();
+        qty.clear();
         // Get names of seller agents as arguments   
         ReadDb();
         System.out.println(title.size());
@@ -50,6 +61,14 @@ public class BookBuyerAgent extends Agent {
         addBehaviour(new waitingBehaviour(this));
     }
 
+     public void newsetup() {
+        myGui.dispose();
+        myGui = new BookBuyerGuiImpl(title, category, qty);
+        ReadDb();
+        myGui.setAgent(this);
+        myGui.show();
+        addBehaviour(new waitingBehaviour(this));
+    }
     /**
      * Agent clean-up
      *
@@ -64,6 +83,26 @@ public class BookBuyerAgent extends Agent {
         System.out.println("Buyer-agent " + getAID().getName() + "terminated.");
     }
 
+    public void sendCourrier(String data) {
+        System.out.println("masuk: " + data);
+        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+        msg.setContent("" + data);
+        msg.addReceiver(new AID("kurir", AID.ISLOCALNAME));
+        msg.setContent(data);
+        send(msg);
+
+    }
+
+    public void bookTaken(String data) {
+        System.out.println("masuk: " + data);
+        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+        msg.setContent("" + data);
+        msg.addReceiver(new AID("sell", AID.ISLOCALNAME));
+        msg.setContent(data);
+        send(msg);
+
+    }
+
     class waitingBehaviour extends CyclicBehaviour {
 
         ACLMessage msg = receive();
@@ -74,7 +113,7 @@ public class BookBuyerAgent extends Agent {
 
         public void action() {
             msg = receive();
-            if (msg != null) {
+            if (msg != null && !msg.getContent().equals("doneRead")) {
 
                 System.out.println("new msg: " + msg.getContent());
                 String lastMsg = msg.getContent();
@@ -82,7 +121,15 @@ public class BookBuyerAgent extends Agent {
                 title.add(tokens[0]);
                 category.add(tokens[1]);
                 qty.add(tokens[2]);
+                myGui.dispose();
+                setup();
+            }
 
+            if (msg != null && msg.getContent().equals("doneRead")) {
+                
+               
+                myGui.dispose();
+                setup();
             }
         }
     }
