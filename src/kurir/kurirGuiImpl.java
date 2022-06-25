@@ -262,16 +262,7 @@ public class kurirGuiImpl extends JFrame implements kurirGui {
 /////////////////////////PANEL 3/////////////////////////
         JPanel p = new JPanel();
 
-        resetB = new JButton("Reset");
-        resetB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                titleTF.setText("");
-                desiredCostTF.setText("");
-                maxCostTF.setText("");
-                deadlineTF.setText("");
-                deadline = null;
-            }
-        });
+        
         exitB = new JButton("Exit");
         exitB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -279,9 +270,7 @@ public class kurirGuiImpl extends JFrame implements kurirGui {
             }
         });
 
-        exitB.setPreferredSize(resetB.getPreferredSize());
-
-        p.add(resetB);
+     
         p.add(exitB);
 
         p.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -347,10 +336,10 @@ public class kurirGuiImpl extends JFrame implements kurirGui {
 
         JButton buyB = new JButton("Done");
         buyB.addActionListener(new ActionListener() {
-            int getIndex = addy - 3;
+            
 
             public void actionPerformed(ActionEvent e) {
-                
+                buyB.setEnabled(false);
             }
         });
         gridBagConstraints = new GridBagConstraints();

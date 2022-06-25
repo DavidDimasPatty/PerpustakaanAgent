@@ -190,6 +190,7 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
         k.add(l, gridBagConstraints);
 
         for (int i = 3; i < title.size() + 3; i++) {
+            if(!qty.get(i - 3).toString().equals("0")){
             l = new JLabel(title.get(i - 3).toString());
             l.setHorizontalAlignment(SwingConstants.LEFT);
             gridBagConstraints = new GridBagConstraints();
@@ -224,9 +225,16 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
             buyB = new JButton("Pinjam");
             buyB.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    myAgent.sendCourrier(nameTF.getText().toString().trim() + " " + addressTF.getText().toString().trim() + " " + "antar" + " " + ThreadLocalRandom.current().nextInt(3000, 100000 + 1));
-                    myAgent.bookTaken(title.get(x).toString().trim());
+                    if (!(nameTF.getText().toString().equals("") && addressTF.getText().toString().equals(""))) {
+                        myAgent.sendCourrier(nameTF.getText().toString().trim() + " " + addressTF.getText().toString().trim() + " " + "antar" + " " + ThreadLocalRandom.current().nextInt(3000, 100000 + 1));
+                        myAgent.bookTaken(title.get(x).toString().trim());
+                    } else {
+                        JFrame frame = new JFrame("frame");
+                        JOptionPane.showMessageDialog(frame, "Field Name and Adress can't be empty");
+                    }
+
                 }
+
             });
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 5;
@@ -235,7 +243,8 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
             k.add(buyB, gridBagConstraints);
             addy++;
             getContentPane().add(k, BorderLayout.WEST);
-        }
+            }
+            }
 /////////////////////////PANEL 2/////////////////////////
 
 /////////////////////////PANEL 3/////////////////////////
@@ -250,14 +259,34 @@ public class BookBuyerGuiImpl extends JFrame implements BookBuyerGui {
                 LinkedList newtitle = new LinkedList();
                 LinkedList newcategory = new LinkedList();
                 LinkedList newqty = new LinkedList();
+                
+                for (int i = 0; i < title.size() / 2; i++) {
+                    if(tc.equals("")){
+                      if (category.get(i).toString().contains(cc)) {
+                        System.out.println("tes");
+                        newtitle.add(title.get(i).toString());
+                        newcategory.add(category.get(i).toString());
+                        newqty.add(qty.get(i).toString());
 
-                for (int i = 0; i < title.size()/2; i++) {
+                    }
+                    }
+                    else if(cc.equals("")){
                     if (title.get(i).toString().contains(tc)) {
                         System.out.println("tes");
                         newtitle.add(title.get(i).toString());
                         newcategory.add(category.get(i).toString());
                         newqty.add(qty.get(i).toString());
 
+                    }    
+                    }
+                    else{
+                    if (title.get(i).toString().contains(tc) || category.get(i).toString().contains(cc)) {
+                        System.out.println("tes");
+                        newtitle.add(title.get(i).toString());
+                        newcategory.add(category.get(i).toString());
+                        newqty.add(qty.get(i).toString());
+
+                    }
                     }
                 }
                 myAgent.title = newtitle;

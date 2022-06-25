@@ -29,6 +29,7 @@ import javax.swing.border.*;
 
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This is the GUI of the agent that tries to sell books on behalf of its user
@@ -38,13 +39,14 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
     private BookSellerAgent myAgent;
 
     private JTextField titleField, qtyField, categoryField;
+    private JTextField nameRF, addressRF;
     private JButton setDeadlineB;
     private JButton setCCB, sellB, resetB, exitB;
     private JTextArea logTA;
     public JPanel k;
     private Date deadline;
     public int cury;
-    public int addy=1;
+    public int addy = 1;
 
     public void setAgent(BookSellerAgent a) {
         myAgent = a;
@@ -135,11 +137,47 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
         rootPanel.add(categoryField, gridBagConstraints);
 
+        l = new JLabel("Name Return:");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
         gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);
+        rootPanel.add(l, gridBagConstraints);
+
+        nameRF = new JTextField(64);
+        // categoryField.setMinimumSize(new Dimension(146, 20));
+        // categoryField.setPreferredSize(new Dimension(146, 20));
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(5, 3, 0, 3);
+        rootPanel.add(nameRF, gridBagConstraints);
+
+        l = new JLabel("Adress Return:");
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);
+        rootPanel.add(l, gridBagConstraints);
+
+        addressRF = new JTextField(64);
+        // categoryField.setMinimumSize(new Dimension(146, 20));
+        // categoryField.setPreferredSize(new Dimension(146, 20));
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new Insets(5, 3, 0, 3);
+        rootPanel.add(addressRF, gridBagConstraints);
 
         rootPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
@@ -220,11 +258,18 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
             gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
             //gridBagConstraints.insets = new java.awt.Insets(5, 3, 0, 3);  
             k.add(l, gridBagConstraints);
-            final int x=i-3;
+            final int x = i - 3;
             JButton buyB = new JButton("Add");
             buyB.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    myAgent.bookReturn(x+ "");
+                    if (!(nameRF.getText().toString().equals("") && nameRF.getText().toString().equals(""))) {
+                        myAgent.bookReturn(x + "");
+                        myAgent.bookReturnCourier(nameRF.getText().toString().trim() + " " + addressRF.getText().toString().trim() + " " + "jemput" + " " + ThreadLocalRandom.current().nextInt(3000, 100000 + 1));
+                    } else {
+                        JFrame frame = new JFrame("frame");
+                        JOptionPane.showMessageDialog(frame, "Field Nama Return and Adress Return can't be empty");
+                    }
+
                 }
             });
             gridBagConstraints = new GridBagConstraints();
@@ -247,13 +292,13 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
                 String category = categoryField.getText();
                 if (!(add.isEmpty() && qty.isEmpty() && category.isEmpty())) {
                     try {
-                         Path path = Paths.get("bookDB.txt");
+                        Path path = Paths.get("bookDB.txt");
                         FileWriter myWriter = new FileWriter("bookDB.txt", true);
                         java.util.List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-                     
+
                         myWriter.write(add + "\n");
                         myWriter.write(category + "\n");
-                        myWriter.write(qty+ "\n");
+                        myWriter.write(qty + "\n");
 
                         myAgent.ReadDb();
                         myWriter.close();
@@ -302,7 +347,10 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
                         titleField.setText("");
                         qtyField.setText("");
                         categoryField.setText("");
-                        myAgent.sendADD(add+" "+category+" "+qty);
+                        myAgent.title.add(add);
+                        myAgent.qty.add(qty);
+                        myAgent.category.add(category);
+                        myAgent.sendADD(add + " " + category + " " + qty);
                         pack();
                         cury++;
                     } catch (IOException ex) {
@@ -312,7 +360,7 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
 
                 } else {
                     JFrame frame = new JFrame("frame");
-                    JOptionPane.showMessageDialog(frame, "Field can't be empty");
+                    JOptionPane.showMessageDialog(frame, "Field Add Book, Quantity Book, and Category can't be empty");
                 }
             }
         });
@@ -322,7 +370,8 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
                 titleField.setText("");
                 qtyField.setText("");
                 categoryField.setText("");
-                deadline = null;
+                nameRF.setText("");
+                addressRF.setText("");
             }
         });
         exitB = new JButton("Exit");
@@ -349,10 +398,9 @@ public class BookSellerGuiImpl extends JFrame implements BookSellerGui {
     public void notifyUser(String message) {
         logTA.append(message + "\n");
     }
-    
 
     @Override
     public void updateGUI() {
-    pack();
+        pack();
     }
 }
